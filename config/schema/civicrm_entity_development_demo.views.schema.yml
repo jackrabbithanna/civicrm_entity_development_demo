@@ -1,0 +1,6 @@
+views.filter.civicrm_entity_development_demo_age:
+  type: views.filter.numeric
+  label: 'Age'
+views.filter_value.civicrm_entity_development_demo_age:
+  type: views.filter_value.numeric
+  label: 'Age'
