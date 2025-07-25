@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Contains civicrm_entity_development_demo.module.
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Session\AccountInterface;
+
+
+/**
+ * Implements hook_civicrm_alter_drupal_entities().
+ *
+ * This hook behaves as a standard _alter() hook.
+ */
+function civicrm_entity_development_demo_civicrm_alter_drupal_entities(&$civicrm_entity_info) {
+  // Update permissions required to access /civicrm-event/[id] pages.
+  $civicrm_entity_info['civicrm_event']['permissions']['view'] = ['access content'];
+  // Modify Event entity type label.
+  $civicrm_entity_info['civicrm_event']['civicrm entity label'] = t('Trainings');
+
+  $civicrm_entity_info['civicrm_country']['permissions']['view'] = ['access content'];
+  $civicrm_entity_info['civicrm_state_province']['permissions']['view'] = ['access content'];
+
+
+  // To integrate with CiviCRM Entity.
+  // Requires an API3 with get, getfields, create actions.
+  // Must have 'id' column.
+
+  /*
+  // the key in the array is the table name, and will be the Drupal entity type name.
+  $civicrm_entity_info['civicrm_voucher_campaign'] = [
+    'civicrm entity label' => t('Voucher Campaign'),
+    // the API3 entity name
+    'civicrm entity name' => 'vouchercampaign', // corresponds to civicrm_vouchercampaign table
+    // base table is optional. Use to have different table name from the standard civicrm_API_ENTITY_TYPE pattern and Drupal entity type name
+    'base table' => 'civicrm_vouchercampaign',
+    // Column in the entity type to use for entity labels
+    'label property' => 'campaign_name',
+    // If empty, defaults to ["administer CiviCRM"]
+    'permissions' => [
+      'view' => [],
+      'update' => [],
+      'create' => [],
+      'delete' => [],
+    ],
+  ];
+   */
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function civicrm_entity_development_demo_civicrm_contact_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  // if Viewing a civicrm_contact.
+  if ($operation == 'view') {
+    // If the contact type is "Organization".
+    if (!empty($entity->contact_type->value) && $entity->contact_type->value == 'Organization') {
+      // Allow access in all cases.
+      return AccessResult::allowed();
+    }
+    // Otherwise deny access in all cases.
+    return AccessResult::forbidden();
+  }
+  // Let defaults or other access control modules decide.
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_entity_field_access().
+ */
+function civicrm_entity_development_demo_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
+  $context = ($operation == 'view') ? 'view' : 'form';
+
+  if ($context == 'view' && $field_definition->getName() == 'organization_name') {
+    if (!in_array('administrator', $account->getRoles())) {
+      return AccessResult::forbidden();
+    }
+  }
+  return AccessResult::neutral();
+}

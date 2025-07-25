@@ -1,0 +1,7 @@
+name: 'CiviCRM Entity Development Demo'
+type: module
+description: 'Collection of demonstration code'
+core_version_requirement: '^10 || ^11'
+package: 'CiviCRM'
+dependencies:
+  - civicrm_entity
