@@ -83,3 +83,21 @@ function civicrm_entity_development_demo_entity_field_access($operation, FieldDe
   }
   return AccessResult::neutral();
 }
+
+/**
+ * Implements hook_views_data().
+ */
+function civicrm_entity_development_demo_views_data() {
+  $data['civicrm_contact']['age'] = [
+    'title' => t('Age'),
+    'help' => t('Display contact age.'),
+    'real field' => 'birth_date',
+    'field' => [
+      'id' => 'civicrm_entity_development_demo_age',
+    ],
+    'filter' => [
+      'id' => 'civicrm_entity_development_demo_age',
+    ],
+  ];
+  return $data;
+}
