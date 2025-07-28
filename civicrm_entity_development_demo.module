@@ -54,6 +54,7 @@ function civicrm_entity_development_demo_civicrm_alter_drupal_entities(&$civicrm
 
 /**
  * Implements hook_ENTITY_TYPE_access().
+ * @see https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Entity%21entity.api.php/function/hook_ENTITY_TYPE_access/11.x
  */
 function civicrm_entity_development_demo_civicrm_contact_access(EntityInterface $entity, $operation, AccountInterface $account) {
   // if Viewing a civicrm_contact.
@@ -72,6 +73,7 @@ function civicrm_entity_development_demo_civicrm_contact_access(EntityInterface 
 
 /**
  * Implements hook_entity_field_access().
+ * @see https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Entity%21entity.api.php/function/hook_entity_field_access/11.x
  */
 function civicrm_entity_development_demo_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
   $context = ($operation == 'view') ? 'view' : 'form';
@@ -86,6 +88,7 @@ function civicrm_entity_development_demo_entity_field_access($operation, FieldDe
 
 /**
  * Implements hook_views_data().
+ * @see https://api.drupal.org/api/drupal/core%21modules%21views%21views.api.php/function/hook_views_data/11.x
  */
 function civicrm_entity_development_demo_views_data() {
   $data['civicrm_contact']['age'] = [
